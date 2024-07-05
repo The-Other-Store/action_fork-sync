@@ -34,7 +34,7 @@ async function run() {
   }
 
   try {
-    let pr = await octokit.rest.pulls.create({ owner: context.repo.owner, repo: context.repo.repo, title: prTitle, head: owner + ':' + head, base: base, body: prMessage, maintainer_can_modify: false });
+    let pr = await octokit.rest.pulls.create({ owner: context.repo.owner, repo: context.repo.repo, title: prTitle, head: owner + ':' + head, head_repo: r?.data?.parent?.full_name, base: base, body: prMessage, maintainer_can_modify: false });
     await delay(20);
     if (autoApprove) {
         await octokit.rest.pulls.createReview({ owner: context.repo.owner, repo: context.repo.repo, pull_number: pr.data.number, event: "COMMENT", body: "Auto approved" });
@@ -53,6 +53,7 @@ async function run() {
       }
     }
   } catch (error: any) {
+    console.log(error);
     if (error?.request?.request?.retryCount) {
       console.log(
         `request failed after ${error.request.request.retryCount} retries with a delay of ${error.request.request.retryAfter}`
