@@ -35,6 +35,7 @@ async function run() {
 
   try {
     let pr = await octokit.rest.pulls.create({ owner: context.repo.owner, repo: context.repo.repo, title: prTitle, head: owner + ':' + head, head_repo: r?.data?.parent?.full_name, base: base, body: prMessage, maintainer_can_modify: false });
+    console.log('pr', pr);
     await delay(20);
     if (autoApprove) {
         await octokit.rest.pulls.createReview({ owner: context.repo.owner, repo: context.repo.repo, pull_number: pr.data.number, event: "COMMENT", body: "Auto approved" });
