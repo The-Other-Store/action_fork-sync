@@ -26,6 +26,8 @@ async function run() {
     repo,
   });
 
+  console.log('r.data.parent', r.data.parent, owner, repo);
+
   if(r && r.data && r.data.parent) {
     owner = r.data.parent.owner.login || owner
     repo = r.data.parent.name || repo
